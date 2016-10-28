@@ -1,0 +1,4 @@
+lib
+well-known
+*.pyc
+.travis.yml
