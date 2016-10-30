@@ -16,17 +16,17 @@ def server_error(e):
     logging.exception('An error occurred during a request.')
     return jsonify({'message': 'An internal error occurred.'}), 500
 
+@app.errorhandler(400)
+def bad_request(e):
+    logging.exception('Bad request')
+    return jsonify({'message': 'Bad request'}), 400
+
 @app.errorhandler(404)
 def not_found(e):
     logging.exception('Not found')
     return jsonify({'message': 'Not Found'}), 404
 
 @app.errorhandler(405)
-def not_found(e):
+def not_allowed(e):
     logging.exception('Method not allowed')
     return jsonify({'message': 'Method not allowed'}), 405
-
-@app.errorhandler(400)
-def not_found(e):
-    logging.exception('Bad request')
-    return jsonify({'message': 'Bad request'}), 400

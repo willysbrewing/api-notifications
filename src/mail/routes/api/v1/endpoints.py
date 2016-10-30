@@ -7,9 +7,9 @@ endpoints_routes = Blueprint('endpoints_routes', __name__,)
 
 @endpoints_routes.route('/mail/send', strict_slashes=False, methods=['POST'])
 def send_mail_endpoint():
-    if request.data:
+    if not request.get_json():
         return error(status=400, error_message="Empty payload")
-    return send.send_mail(request.data)
+    return send.send_mail(request.get_json())
 
 @endpoints_routes.route('/mail/check', strict_slashes=False, methods=['GET'])
 def check_mail_endpoint():

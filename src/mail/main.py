@@ -1,7 +1,7 @@
-# [START app]
 import logging
 
 from flask import Flask
+from src.helpers.generic_errors import main
 from routes.api.v1.endpoints import endpoints_routes
 
 app = Flask(__name__) # Flask app
