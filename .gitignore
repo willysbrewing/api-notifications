@@ -2,3 +2,6 @@ lib
 well-known
 *.pyc
 .travis.yml
+.env
+
+config/secrets.json
