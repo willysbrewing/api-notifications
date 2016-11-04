@@ -52,5 +52,6 @@ def execute(to_email, subject=None, content=None, template=None):
 
 def set_template(mail, id, data):
     if id == "c348a464-4240-4cf4-9c88-7b2c892070d7":
-        mail.personalizations[0].add_substitution(Substitution("-name-", data['name']))
+        name = data['name'].encode('utf-8')
+        mail.personalizations[0].add_substitution(Substitution("-name-", name))
         mail.set_template_id(id)

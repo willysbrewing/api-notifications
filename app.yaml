@@ -4,15 +4,11 @@ threadsafe: true
 service: notifications
 
 handlers:
-- url: /
-  script: src.home.main.app
-
 - url: /mail/.*
   script: src.mail.main.app
   secure: always
-
-- url: /.well-known
-  static_dir: well-known
-
 - url: /.*
   script: src.helpers.generic_errors.main.app
+
+automatic_scaling:
+  max_idle_instances: 10
