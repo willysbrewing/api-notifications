@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-class Error(object):
+class Error:
     def __init__(self, status, detail):
         self.status = status
         self.detail = detail

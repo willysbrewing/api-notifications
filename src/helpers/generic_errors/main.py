@@ -12,21 +12,16 @@ def error(status, error_message):
 
 @app.errorhandler(500)
 def server_error(e):
-    # Log the error and stacktrace.
-    logging.exception('An error occurred during a request.')
-    return jsonify({'message': 'An internal error occurred.'}), 500
+    return error(status=500, error_message='An internal error occurred')
 
 @app.errorhandler(400)
 def bad_request(e):
-    logging.exception('Bad request')
-    return jsonify({'message': 'Bad request'}), 400
+    return error(status=400, error_message='Bad request')
 
 @app.errorhandler(404)
 def not_found(e):
-    logging.exception('Not found')
-    return jsonify({'message': 'Not Found'}), 404
+    return error(status=404, error_message='Not found')
 
 @app.errorhandler(405)
 def not_allowed(e):
-    logging.exception('Method not allowed')
-    return jsonify({'message': 'Method not allowed'}), 405
+    return error(status=405, error_message='Method not allowed')
