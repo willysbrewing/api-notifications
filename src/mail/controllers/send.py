@@ -16,7 +16,7 @@ def execute(payload):
         subject = payload['subject']
         content = payload['content']
         template = None
-        store = True # change? yep
+        list_id = 717988 # ListID @TODO generic
 
         if not content:
             content = 'notset'
@@ -24,21 +24,21 @@ def execute(payload):
             subject = 'notset'
         if 'template' in payload:
             template = payload['template'] # template.id & template.data
-        if 'store' in payload:
-            store = payload['store']
+        if 'list_id' in payload:
+            list_id = payload['list_id']
     except Exception as e:
         return {'status':400, 'error_message':"Wrong payload: "+str(e)}
 
-    return SendMail(recipient, subject, content, template, store).execute() # send
+    return SendMail(recipient, subject, content, template, list_id).execute() # send
 
 class SendMail:
-    def __init__(self, recipient, subject, content, template, store):
+    def __init__(self, recipient, subject, content, template, list_id):
         self.recipient = recipient
         self.subject = subject
         self.content = Content('text/html', content)
         self.template = template
         self.sender = SENDGRID_API_SENDER
-        self.store = store
+        self.list_id = list_id
         self.sg = sendgrid.SendGridAPIClient(apikey=SENDGRID_API_KEY)
 
 
@@ -53,7 +53,7 @@ class SendMail:
         if (response.status_code != 200) and (response.status_code != 202):
             return {'status':response.status_code, 'error_message':response.body}
 
-        if self.store:
+        if self.list_id:
             return self.store_contact()
         else:
             return {'message': 'Email Sent'}
@@ -75,7 +75,16 @@ class SendMail:
         if self.template != None and 'name' in self.template['data']:
             contact_data[0]['first_name'] = self.template['data']['name']
 
+        # Create contact
         response = self.sg.client.contactdb.recipients.post(request_body=contact_data)
+        if (response.status_code != 200) and (response.status_code != 201):
+            return {'status':response.status_code, 'error_message':response.body}
+
+        # Get ContactId
+        recipient_id = json.loads(response.body)['persisted_recipients'][0]
+
+        # Store in List
+        response = self.sg.client.contactdb.lists._(self.list_id).recipients._(recipient_id).post()
         if (response.status_code != 200) and (response.status_code != 201):
             return {'status':response.status_code, 'error_message':response.body}
 
