@@ -1,15 +1,16 @@
-import logging
+import json
 
-from flask import Flask, jsonify
-import errorserializer
+from flask import Flask
+from notifications.mail.routes.api.v1 import endpoints
+from notifications.helpers import error
 
+# Flask
 app = Flask(__name__)
 
-def error(status, error_message):
-    data = errorserializer.serialize(status, error_message=error_message)
-    logging.error(error_message)
-    return jsonify(data), status
+# Endpoints
+app.register_blueprint(endpoints)
 
+# Errors
 @app.errorhandler(500)
 def server_error(e):
     return error(status=500, error_message='An internal error occurred')
