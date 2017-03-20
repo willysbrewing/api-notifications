@@ -1,13 +1,13 @@
-import os
-from flask import Blueprint, request, jsonify
+
+from flask import request, jsonify
 from flask_cors import CORS, cross_origin
-from src.mail.controllers import send
-from src.mail.serializers import sendmail
-from src.helpers.generic_errors.main import error
 
-endpoints_routes = Blueprint('endpoints_routes', __name__,)
+from . import endpoints
+from notifications.mail.services import send
+from notifications.mail.serializers import sendmail
+from notifications.helpers import error
 
-@endpoints_routes.route('/mail/send', strict_slashes=False, methods=['POST'])
+@endpoints.route('/mail/send', strict_slashes=False, methods=['POST'])
 @cross_origin()
 def send_mail_endpoint():
     if not request.get_json():

@@ -1,4 +1,4 @@
-from src.mail.models.SendMail import SendMail, SendMailSchema
+from notifications.mail.models import SendMail, SendMailSchema
 
 def serialize(message):
     sendmail = SendMail(message=message)
