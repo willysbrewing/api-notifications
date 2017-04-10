@@ -63,6 +63,13 @@ class SendMail:
             name = self.template['data']['name'].encode('utf-8')
             mail.personalizations[0].add_substitution(Substitution("-name-", name))
             mail.set_template_id(self.template['id'])
+        if self.template['id'] == "b9e4a79f-5bd0-4ba9-b0b1-4a6a64df9156":
+            from_field = self.template['data']['from'].encode('utf-8')
+            content = self.template['data']['content'].encode('utf-8')
+            mail.personalizations[0].add_substitution(Substitution("-from-", from_field))
+            mail.personalizations[0].add_substitution(Substitution("-content-", content))
+            mail.set_template_id(self.template['id'])
+
 
     def store_contact(self):
         contact_data = [
